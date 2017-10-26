@@ -26,7 +26,7 @@ public class Deck {
 
     private void populate() {
         cards = new ArrayList<Card>();
-        for (Suit suit: EnumSet.allOf(Suit.class)) {
+        for (Suit suit: Suit.values()) {
             for (int value = 1; value <= 13; value++) {
                 if (value < 11){
                     cards.add(new Card(suit, value));
