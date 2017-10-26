@@ -7,7 +7,7 @@ public class Player {
     String name;
     Double money = Double.valueOf(500);
     Integer score = Integer.valueOf(0);
-    boolean aceBonus = false;
+    //boolean aceBonus = false;
 
     public Player(String name) {
         this.name = name;
@@ -29,7 +29,8 @@ public class Player {
         return hand;
     }
 
-    public void addHand(Card card) {
+    // blackjack hit
+    public void addToHand(Card card) {
         hand.add(card);
     }
 
@@ -41,12 +42,28 @@ public class Player {
         money -= amount;
     }
 
-    private boolean isAceInHand() {
+    public boolean isAceInHand() {
         for(Card card: hand) {
             if(card.getValue() == 1) {
                 return true;
             }
         }
         return false;
+    }
+
+    public Integer calculateScore() {
+        int sum = 0;
+        for(Card card: hand) {
+            sum += card.getValue();
+        }
+        if(isAceInHand() && sum < 11) {
+            sum += 10;
+        }
+
+        return sum;
+    }
+
+    public void receiveWinnings(Double amount) {
+        money += amount;
     }
 }
