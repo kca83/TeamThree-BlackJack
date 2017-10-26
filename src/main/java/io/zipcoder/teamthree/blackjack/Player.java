@@ -41,5 +41,12 @@ public class Player {
         money -= amount;
     }
 
-    
+    private boolean isAceInHand() {
+        for(Card card: hand) {
+            if(card.getValue() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

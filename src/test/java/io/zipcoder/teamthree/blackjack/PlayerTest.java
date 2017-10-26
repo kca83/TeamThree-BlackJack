@@ -85,4 +85,10 @@ public class PlayerTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void isAceInHandTest() {
+        Player testPlayer = new Player("Tim");
+        
+    }
+
 }
