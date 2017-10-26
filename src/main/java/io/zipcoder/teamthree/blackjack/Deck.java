@@ -13,8 +13,10 @@ public class Deck {
         populate();
     }
 
-    public Card getCard(Integer index){
-        return cards.get(index);
+    public Card getCard(){
+        Card card = cards.get(0);
+        cards.remove(0);
+        return card;
     }
 
     public ArrayList<Card> getAllCards(){

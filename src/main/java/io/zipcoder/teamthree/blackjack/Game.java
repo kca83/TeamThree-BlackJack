@@ -11,15 +11,19 @@ public class Game {
     private Double pot;
 
     public Game (){
-        player = new Player();
+        player = new Player("Amy");
         deck = new Deck();
-        dealer = new Player();
+        dealer = new Player("DealThis");
         deck.shuffle();
-        pot = player.bet(50.0);
+        pot = 0.0;
     }
 
     public Double getPot() {
         return pot;
+    }
+
+    public void addToPot(Double amount) {
+        this.pot += amount;
     }
 
     public Player getPlayer() {
@@ -46,6 +50,8 @@ public class Game {
         // if both player and dealer score are over 21 then dealer wins
         // if player's score is <= 21 and players score is greater than dealers score then player wins.
         //if dealer's score is > 21 and player's score is <= 21 then players wins.
+        player.calculateScore();
+        dealer.calculateScore();
 
         if((player.getScore().equals(21) && !dealer.getScore().equals(21)) ||
                 (player.getScore()<21 && dealer.getScore() < player.getScore()) ||
@@ -55,31 +61,32 @@ public class Game {
         }
         //Dealer wins
         return false;
-
-
     }
 
     public void dealCard(Player playerToReceiveCard){
         Card card = deck.getCard();
-        playerToReceiveCard.addCardToHand(card);
+        playerToReceiveCard.addToHand(card);
     }
 
-    public void askPlayerForHit(Player player) {
-        if (player.getHit() == true) {
-            dealCard(player);
-        }
-    }
-
-//    public void askDealerForHit() {
-//        while (dealer.getScore() <= 17)
-//        {
-//            dealCard(dealer);
+//    public void hitPlayer(Player player) {
+//        if (Console.hit() == true) {
+//            dealCard(player);
 //        }
 //    }
 
+    public void dealerHitUntilFinished() {
+        while (dealer.calculateScore() <= 17)
+        {
+            dealCard(dealer);
+        }
+    }
+
     public void returnBet() {
         if (playerWins()) {
-            player.addMoney(pot * 2);
+            player.receiveWinnings(pot * 2);
+        }
+        else {
+            this.pot = 0.0;
         }
     }
 }

@@ -8,7 +8,10 @@ public class GameTest {
     @Test
     public void getPot() {
         Game game = new Game();
+        Player player = game.getPlayer();
         Double expectedPot = 50.0;
+        player.makeBet(50.0);
+        game.addToPot(50.0);
         Double actualPot = game.getPot();
         Assert.assertEquals(expectedPot, actualPot);
     }
@@ -23,91 +26,171 @@ public class GameTest {
         Player player = game.getPlayer();
         Player dealer = game.getDealer();
 
-
-        int actualNumberOfPlayerCards = player.getHandSize();
-        int actualNumberOfDealerCards = dealer.getHandSize();
+        int actualNumberOfPlayerCards = player.getHand().size();
+        int actualNumberOfDealerCards = dealer.getHand().size();
 
         Assert.assertEquals(expectedNumberOfPlayerCards, actualNumberOfPlayerCards);
         Assert.assertEquals(expectedNumberOfDealerCards, actualNumberOfDealerCards);
     }
 
     @Test
-    public void playerWinsTest() {
+    public void playerWinsTest_True1() {
         Game game = new Game();
 
         Player player = game.getPlayer();
         Player dealer = game.getDealer();
 
-        boolean expected = true;
-        boolean expected2 = false;
-        boolean expected3 = true;
+        Card ace = new Card(Suit.HEARTS, 1);
+        Card nine = new Card(Suit.CLUBS, 9);
+        Card ten = new Card(Suit.HEARTS, 10);
 
-        player.setScore();
-        player.getScore();
-        dealer.setScore();
-        dealer.getScore();
+        player.addToHand(ace);
+        player.addToHand(nine);
+        player.addToHand(ten);
+
+        dealer.addToHand(ten);
+        dealer.addToHand(nine);
+
+        boolean expected = true;
 
         boolean actual = game.playerWins();
 
-        player.setScore();
-        dealer.setScore();
-        player.getScore();
-        dealer.getScore();
+        Assert.assertEquals(expected, actual);
 
-        boolean actual2 = game.playerWins();
+        System.out.println(player.getScore());
+        System.out.println(dealer.getScore());
+    }
 
-        player.setScore();
-        dealer.setScore();
-        player.getScore();
-        dealer.getScore();
+    @Test
+    public void playerWinsTest_True2() {
+        Game game = new Game();
 
-        boolean actual3 = game.playerWins();
+        Player player = game.getPlayer();
+        Player dealer = game.getDealer();
+
+        Card ace = new Card(Suit.HEARTS, 1);
+        Card nine = new Card(Suit.CLUBS, 9);
+        Card ten = new Card(Suit.HEARTS, 10);
+
+        player.addToHand(ace);
+        player.addToHand(nine);
+        player.addToHand(ten);
+
+        dealer.addToHand(ten);
+        dealer.addToHand(nine);
+        dealer.addToHand(nine);
+
+        boolean expected = true;
+
+        boolean actual = game.playerWins();
 
         Assert.assertEquals(expected, actual);
-        Assert.assertEquals(expected2, actual2);
-        Assert.assertEquals(expected3, actual3);
+
+        System.out.println(player.getScore());
+        System.out.println(dealer.getScore());
     }
 
     @Test
-    public void dealCardTest() {
-        //Calls on methods in other Class Deck and Player.
-    }
-
-    @Test
-    public void askPlayerForHitTest() {
+    public void playerWinsTest_True3() {
         Game game = new Game();
-        Player player = game.getPlayer();
-        int expectedHandSize = 1;
-        game.askPlayerForHit(player);
-        int actualHandSize = player.getHandSize();
-        Assert.assertEquals(expectedHandSize, actualHandSize);
 
+        Player player = game.getPlayer();
+        Player dealer = game.getDealer();
+
+        Card ace = new Card(Suit.HEARTS, 1);
+        Card nine = new Card(Suit.CLUBS, 9);
+        Card ten = new Card(Suit.HEARTS, 10);
+
+        player.addToHand(ace);
+        player.addToHand(ten);
+
+        dealer.addToHand(ten);
+        dealer.addToHand(nine);
+
+        boolean expected = true;
+
+        boolean actual = game.playerWins();
+
+        System.out.println(player.getScore());
+        System.out.println(dealer.getScore());
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void askDealerForHit() {
-//        Game game = new Game();
-//        Player dealer = game.getDealer();
-//        int expectedHandSize = 1;
-//        dealer.setScore(16);
-//        game.askDealerForHit();
-//        int actualHandSize = dealer.getHandSize();
-//
-//        int expectedHandSize2 = 0;
-//        dealer.setScore(17);
-//        game.askDealerForHit();
-//        int actualHandSize2 = dealer.getHandSize();
-//
-//        Assert.assertEquals(expectedHandSize, actualHandSize);
-//        Assert.assertEquals(expectedHandSize2, actualHandSize2);
+    public void playerWinsTest_False() {
+        Game game = new Game();
 
+        Player player = game.getPlayer();
+        Player dealer = game.getDealer();
+
+        Card ace = new Card(Suit.HEARTS, 1);
+        Card nine = new Card(Suit.CLUBS, 9);
+        Card ten = new Card(Suit.HEARTS, 10);
+
+        player.addToHand(ace);
+        player.addToHand(ten);
+
+        dealer.addToHand(ten);
+        dealer.addToHand(ace);
+
+        boolean expected = false;
+
+        boolean actual = game.playerWins();
+
+        System.out.println(player.getScore());
+        System.out.println(dealer.getScore());
+
+        Assert.assertEquals(expected, actual);
+    }
+
+//
+//    @Test
+//    public void hitPlayer() {
+//        Game game = new Game();
+//        Player player = game.getPlayer();
+//        int expectedHandSize = 1;
+//        game.askPlayerForHit(player);
+//        int actualHandSize = player.getHandSize();
+//        Assert.assertEquals(expectedHandSize, actualHandSize);
+//
+//    }
+
+    @Test
+    public void dealerHitUntilFinished() {
+        Game game = new Game();
+        Player dealer = game.getDealer();
+
+        boolean expected = true;
+
+        game.dealerHitUntilFinished();
+        boolean actual = (dealer.getHand().size() >= 2);
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void returnBet() {
         Game game = new Game();
-        Double expected = 50.0;
-        Double actual = game.getPot();
+
+        Player player = game.getPlayer();
+        Player dealer = game.getDealer();
+
+        Card ace = new Card(Suit.HEARTS, 1);
+        Card nine = new Card(Suit.CLUBS, 9);
+        Card ten = new Card(Suit.HEARTS, 10);
+
+        player.addToHand(ace);
+        player.addToHand(ten);
+
+        dealer.addToHand(ten);
+        dealer.addToHand(nine);
+
+        Double expected = 550.0;
+        player.makeBet(50.0);
+        game.addToPot(50.0);
+        game.returnBet();
+        Double actual = player.getMoney();
         Assert.assertEquals(expected, actual, .001);
     }
 }
