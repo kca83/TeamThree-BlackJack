@@ -12,26 +12,26 @@ public class DeckTest {
     Deck deck;
 
     @Before
-    public void setup() {
+    public void setUp() {
         deck = new Deck();
     }
 
     @Test
-    public void getCard(){
+    public void getCardTest(){
         Assert.assertTrue(deck.getCard(0) instanceof Card);
     }
 
     @Test
-    public void populate() {
+    public void populateTest() {
         Integer expectedCount = 52;
         Integer actualCount = deck.getAllCards().size();
 
         Assert.assertEquals( expectedCount, actualCount);
         Assert.assertTrue(deck.getCard(1) instanceof Card);
     }
-
+    
     @Test
-    public void shuffle(){
+    public void shuffleTest(){
         Card[] cardArray1 = new Card[52];
         Card[] cardArray2 = new Card[52];
 
