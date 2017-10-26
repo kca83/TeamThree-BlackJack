@@ -67,4 +67,5 @@ public class ConsoleTest {
 
         Assert.assertFalse(Console.isInputPositive(input));
     }
+
 }

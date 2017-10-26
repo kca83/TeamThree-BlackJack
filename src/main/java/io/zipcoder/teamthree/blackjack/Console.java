@@ -5,26 +5,51 @@ import java.util.Scanner;
 public class Console {
 
     public static void run(){
+        //start a game: player, dealer, deck
+        //player bets
+        //deal cards
+        //player hit or stay
+        //dealer hits or stays
+        //winner deterimined
+        //pot emptied
+        //end round
+        //if lose, quit
+        //if quit, quit, show monay
+        //if not quit -> make a bet
 
         Game game = new Game();
-
-       
-        //game.start();
+        String input = "";
 
         System.out.println("Welcome to the <BlackJack> table, player1!");
         System.out.println("You have $" /* + monay*/);
+        do {
 
-        //make a bet
+            do {
+                System.out.println("How much do you want to bet?");
+                input = getInput();
+            }
+            while (!(isInputDouble(input) && isInputPositive(input)));
+            Double betField = Double.valueOf(input);
+        }
+        while (!game.getPlayer().hasMoneyToMakeBet(betfield));
 
-        //Console.makeABet(stringInput());
+        // this is the bet double -> makeABet(input);
+        // bet logic
 
-        //do
-        //prompt
-        //take input = input
-        //while(!isInputDouble(input)){
+        do {
+            do {
+                System.out.println("Do you hit or stay?");
+                input = getInput();
+            } while (!isInputStayOrHit(input));
+
+            //do a hit
+
+        } while ("hit".equals(input));
+
+
     }
 
-    Scanner scanner = new Scanner (System.in);
+    private static Scanner scanner = new Scanner (System.in);
 
     public static Double makeABet(String input) {
         Double betDouble;
@@ -33,10 +58,9 @@ public class Console {
         betDouble = Double.valueOf(input);
 
         return betDouble;
-
     }
 
-    private String getInput()
+    private static String getInput()
     {
         return scanner.nextLine();
     }
@@ -63,17 +87,4 @@ public class Console {
         return ("hit".equalsIgnoreCase(passedString) ||
                 "stay".equalsIgnoreCase(passedString));
     }
-    //player bets
-    //deal cards
-    //player hit or stay
-    //dealer hits or stays
-    //winner deterimined
-    //pot emptied
-    //end round
-    //if lose, quit
-    //if quit, quit, show monay
-    //if not quit -> make a bet
-
-
-
 }
