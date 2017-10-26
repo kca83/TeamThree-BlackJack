@@ -18,7 +18,7 @@ public class DeckTest {
 
     @Test
     public void getCardTest(){
-        Assert.assertTrue(deck.getCard(0) instanceof Card);
+        Assert.assertTrue(deck.getCard() instanceof Card);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class DeckTest {
         Integer actualCount = deck.getAllCards().size();
 
         Assert.assertEquals( expectedCount, actualCount);
-        Assert.assertTrue(deck.getCard(1) instanceof Card);
+        Assert.assertTrue(deck.getCard() instanceof Card);
     }
     
     @Test
