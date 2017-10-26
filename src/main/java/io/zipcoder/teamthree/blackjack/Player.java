@@ -3,11 +3,10 @@ package io.zipcoder.teamthree.blackjack;
 import java.util.ArrayList;
 
 public class Player {
-    ArrayList<Card> hand = new ArrayList<Card>(2);
-    String name;
-    Double money = Double.valueOf(500);
-    Integer score = Integer.valueOf(0);
-    //boolean aceBonus = false;
+    private ArrayList<Card> hand = new ArrayList<Card>(2);
+    private String name;
+    private Double money = Double.valueOf(500);
+    private Integer score = Integer.valueOf(0);
 
     public Player(String name) {
         this.name = name;
