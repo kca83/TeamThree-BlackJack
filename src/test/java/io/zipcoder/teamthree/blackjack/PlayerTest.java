@@ -88,7 +88,7 @@ public class PlayerTest {
     @Test
     public void isAceInHandTest() {
         Player testPlayer = new Player("Tim");
-        
+
     }
 
 }
