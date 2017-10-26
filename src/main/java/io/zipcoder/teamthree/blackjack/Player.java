@@ -55,10 +55,12 @@ public class Player {
         for(Card card: hand) {
             sum += card.getValue();
         }
+
         if(isAceInHand() && sum <= 11) {
             sum += 10;
         }
         score = sum;
+
         return sum;
     }
 
