@@ -26,57 +26,72 @@ public class Console {
 
         System.out.println("Welcome to the <BlackJack> table, player1!");
 
-        game.start();
+
         System.out.println("You have $"+userPlayer.getMoney());
 
-        //do
-
         do {
-
+            game.start();
             do {
-                System.out.println("How much do you want to bet?");
-                input = getInput();
+
+                do {
+                    System.out.println("How much do you want to bet?");
+                    input = getInput();
+                }
+                while (!isInputDouble(input) || !isInputPositive(input));
+                betField = Double.valueOf(input);
             }
-            while (!isInputDouble(input) || !isInputPositive(input));
-            betField = Double.valueOf(input);
-        }
-        while (!userPlayer.hasMoneyToMakeBet(betField));
+            while (!userPlayer.hasMoneyToMakeBet(betField));
 
-        userPlayer.makeBet(betField);
-        game.addToPot(betField);
+            userPlayer.makeBet(betField);
+            game.addToPot(betField);
 
-        for(Card card: userPlayer.getHand()){ System.out.println(card.toString());}
-        System.out.println("Your current score is: "+userPlayer.calculateScore());
-
-        do {
-
-
-            do {
-                System.out.print("Hit or stay? ");
-                input = getInput();
-            } while (!isInputStayOrHit(input));
-
-            if ("hit".equalsIgnoreCase(input)) {
-                game.dealCard(userPlayer);
+            for (Card card : userPlayer.getHand()) {
+                System.out.println(card.toString());
             }
             System.out.println("Your current score is: " + userPlayer.calculateScore());
-            for(Card card: userPlayer.getHand()){ System.out.println(card.toString());}
 
-        }while("hit".equalsIgnoreCase(input) && (userPlayer.calculateScore()<=21) );
+            do {
 
-         game.dealerHitUntilFinished();
 
-         if(game.playerWins()){
-             System.out.println("Player wins!");
-         } else {
-             System.out.println("House wins!");
-         }
-        System.out.println("House has score: "+game.getDealer().getScore());
+                do {
+                    System.out.print("Hit or stay? ");
+                    input = getInput();
+                } while (!isInputStayOrHit(input));
 
-         game.returnBet();
+                if ("hit".equalsIgnoreCase(input)) {
+                    game.dealCard(userPlayer);
+                }
+                System.out.println("Your current score is: " + userPlayer.calculateScore());
+                for (Card card : userPlayer.getHand()) {
+                    System.out.println(card.toString());
+                }
 
-            System.out.println("You have $"+userPlayer.getMoney());
+            } while ("hit".equalsIgnoreCase(input) && (userPlayer.calculateScore() <= 21));
 
+            game.dealerHitUntilFinished();
+
+            if (game.playerWins()) {
+                System.out.println("Player wins!");
+            } else {
+                System.out.println("House wins!");
+            }
+            System.out.println("House has score: " + game.getDealer().getScore());
+
+            game.returnBet();
+            userPlayer.getHand().clear();
+            game.getDealer().getHand().clear();
+
+            System.out.println("You have $" + userPlayer.getMoney());
+            do {
+                System.out.println("Wanna go another round, cowboy?");
+                input = getInput();
+             }while (!isInputYesOrNo(input));
+        } while ("yes".equalsIgnoreCase(input) && userPlayer.getMoney()>=0.01);
+        if(userPlayer.getMoney() < 0.01d){
+            System.out.println("You outta monay");
+        }
+
+        System.out.println("Goodbye!");
 
         
 
@@ -135,5 +150,11 @@ public class Console {
     {
         return ("hit".equalsIgnoreCase(passedString) ||
                 "stay".equalsIgnoreCase(passedString));
+    }
+
+    public static boolean isInputYesOrNo(String passedString)
+    {
+        return ("yes".equalsIgnoreCase(passedString) ||
+                "no".equalsIgnoreCase(passedString));
     }
 }

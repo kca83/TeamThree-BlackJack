@@ -68,4 +68,20 @@ public class ConsoleTest {
         Assert.assertFalse(Console.isInputPositive(input));
     }
 
+    @Test
+    public void issInputYesOrNo_PassTest(){
+        String stay = "yes";
+        String hit = "no";
+
+        Assert.assertTrue(Console.isInputYesOrNo(stay));
+        Assert.assertTrue(Console.isInputYesOrNo(hit));
+    }
+
+    @Test
+    public void isInputYesOrNo_FailTest(){
+        String fail = "fail";
+
+        Assert.assertFalse(Console.isInputStayOrHit(fail));
+    }
+
 }
