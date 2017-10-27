@@ -27,7 +27,8 @@ public class Console {
         System.out.println("Thanks for playing! Goodbye!");
     }
 
-    private static boolean playerStaysForAnotherRound(Player userPlayer) {
+    //private static boolean playerStaysForAnotherRound(Player userPlayer) {//production
+    public static boolean playerStaysForAnotherRound(Player userPlayer) {//testing
         String input;
         System.out.println("You have $" + userPlayer.getMoney());
         if (userPlayer.getMoney() >= 0.01) {
@@ -47,8 +48,8 @@ public class Console {
         return false;
     }
 
-    private static void determineWinOrLoss(Player userPlayer){
-
+    //private static void determineWinOrLoss(Player userPlayer){//production
+    public static void determineWinOrLoss(Player userPlayer){//testing
         if (game.playerWins()) {
             System.out.println("Player wins!");
         } else {
