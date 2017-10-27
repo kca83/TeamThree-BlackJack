@@ -84,4 +84,13 @@ public class ConsoleTest {
         Assert.assertFalse(Console.isInputStayOrHit(fail));
     }
 
+    /*@Test
+    public void forceTwoDecimalDoubleTest(){
+        String input="50.009";
+        String expected="50.00";
+        String actual=Console.forceTwoDecimalDouble(input);
+
+        Assert.assertTrue(expected.equals(actual));
+    }*/
+
 }
