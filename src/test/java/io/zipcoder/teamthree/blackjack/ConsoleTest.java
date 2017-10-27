@@ -47,14 +47,6 @@ public class ConsoleTest {
     }
 
     @Test
-    public void makeABetShouldReturn50Test(){
-        Double expected = 50d;
-        Double actual = Console.makeABet("50");
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
     public void isInputDoublePositive_PassTest(){
         String input = "50";
 

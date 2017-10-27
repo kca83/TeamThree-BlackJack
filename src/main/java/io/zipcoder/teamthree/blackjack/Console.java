@@ -55,7 +55,10 @@ public class Console {
             System.out.println("House wins!");
         }
         System.out.println("House has score: " + game.getDealer().getScore());
+        resetPotAndDiscardHands(userPlayer);
+    }
 
+    private static void resetPotAndDiscardHands(Player userPlayer){
         game.returnBet();
         userPlayer.getHand().clear();
         game.getDealer().getHand().clear();
@@ -117,15 +120,6 @@ public class Console {
             input = getInput();
         } while (!isInputDouble(input) || !isInputPositive(input));
         return input;
-    }
-
-    public static Double makeABet(String input) {
-        Double betDouble;
-        System.out.println("Make a bet!");
-
-        betDouble = Double.valueOf(input);
-
-        return betDouble;
     }
 
     private static String getInput()
