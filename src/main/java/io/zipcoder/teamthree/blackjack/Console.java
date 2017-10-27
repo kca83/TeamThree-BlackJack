@@ -136,8 +136,6 @@ public class Console {
         try {
             Double output = Double.valueOf(passedString);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            System.out.println("Not a valid input");
             return false;
         }
         return (true);
