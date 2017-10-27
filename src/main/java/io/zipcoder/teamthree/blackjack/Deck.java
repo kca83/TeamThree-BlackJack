@@ -16,6 +16,7 @@ public class Deck {
     public Card getCard(){
         if(cards.size() == 0) {
             populate();
+            shuffle();
         }
         Card card = cards.get(0);
         cards.remove(0);
