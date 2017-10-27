@@ -12,7 +12,7 @@ public class Console {
         Player userPlayer = game.getPlayer();
 
         System.out.println("Welcome to the <BlackJack> table, "+userPlayer.getName()+"!");
-        System.out.println("You have $"+userPlayer.getMoney());
+        System.out.println("You have $"+forceTwoDecimalDouble(userPlayer.getMoney().toString()));
 
         do {
             game.start();
@@ -27,10 +27,9 @@ public class Console {
         System.out.println("Thanks for playing! Goodbye!");
     }
 
-    //private static boolean playerStaysForAnotherRound(Player userPlayer) {//production
-    public static boolean playerStaysForAnotherRound(Player userPlayer) {//testing
+    private static boolean playerStaysForAnotherRound(Player userPlayer) {
         String input;
-        System.out.println("You have $" + userPlayer.getMoney());
+        System.out.println("You have $" + forceTwoDecimalDouble(userPlayer.getMoney().toString()));
         if (userPlayer.getMoney() >= 0.01) {
             do {
                 System.out.print("Stay for another round? [Yes/No]  ");
@@ -48,8 +47,8 @@ public class Console {
         return false;
     }
 
-    //private static void determineWinOrLoss(Player userPlayer){//production
-    public static void determineWinOrLoss(Player userPlayer){//testing
+    private static void determineWinOrLoss(Player userPlayer){
+
         if (game.playerWins()) {
             System.out.println("Player wins!");
         } else {
@@ -120,7 +119,7 @@ public class Console {
             System.out.print("How much do you want to bet?  ");
             input = getInput();
         } while (!isInputDouble(input) || !isInputPositive(input));
-        return input;
+        return forceTwoDecimalDouble(input);
     }
 
     private static String getInput()
@@ -156,5 +155,26 @@ public class Console {
                 "no".equalsIgnoreCase(passedString));
     }
 
+    public static String forceTwoDecimalDouble(String input){
+        if ( !(input.contains(".")) ||
+               input.substring(input.indexOf("."), input.length()).length()==3)
+        {
+            return input;
+        }
+        else
+        {
+            if (input.substring(input.indexOf("."), input.length()).length()<3) {
+                do {
+                    input = input + "0";
+                } while (input.substring(input.indexOf("."), input.length()).length() < 3);
+                return input;
+            }
 
+            input = input.substring(0,input.indexOf("."))+
+                    input.substring(input.indexOf("."), input.indexOf(".")+3);
+            return input;
+        }
+
+
+    }
 }
