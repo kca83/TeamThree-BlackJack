@@ -15,7 +15,7 @@ public class ConsoleTest {
     @Test
     public void isInputDouble_PassTest(){
 
-        String input="50";
+        String input="50.";
         boolean actual=Console.isInputDouble(input);
         Assert.assertTrue(actual);
 
@@ -47,14 +47,6 @@ public class ConsoleTest {
     }
 
     @Test
-    public void makeABetShouldReturn50Test(){
-        Double expected = 50d;
-        Double actual = Console.makeABet("50");
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
     public void isInputDoublePositive_PassTest(){
         String input = "50";
 
@@ -82,6 +74,25 @@ public class ConsoleTest {
         String fail = "fail";
 
         Assert.assertFalse(Console.isInputStayOrHit(fail));
+    }
+
+    @Test
+    public void forceTwoDecimalDoubleTest_PassTooMany(){
+        String input="50.00000209";
+        String expected="50.00";
+        String actual=Console.forceTwoDecimalDouble(input);
+
+
+        Assert.assertTrue(expected.equals(actual));
+    }
+
+    @Test
+    public void forceTwoDecimalDoubleTest_PassTooFew(){
+        String input="50.";
+        String expected="50.00";
+        String actual=Console.forceTwoDecimalDouble(input);
+
+        Assert.assertTrue(expected.equals(actual));
     }
 
 }

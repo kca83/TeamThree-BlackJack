@@ -4,124 +4,122 @@ import java.util.Scanner;
 
 public class Console {
 
+    private static Game game = new Game();
+    private static Scanner scanner = new Scanner (System.in);
+
     public static void run(){
-        //start a game: player, dealer, deck
-        //player bets
-        //deal cards
-        //player hit or stay
-        //dealer hits or stays
-        //winner deterimined
-        //pot emptied
-        //end round
-        //if lose, quit
-        //if quit, quit, show monay
-        //if not quit -> make a bet
 
-        Game game = new Game();
         Player userPlayer = game.getPlayer();
-        String input;
 
-        
-        Double betField;
-
-        System.out.println("Welcome to the <BlackJack> table, player1!");
-
-
-        System.out.println("You have $"+userPlayer.getMoney());
+        System.out.println("Welcome to the <BlackJack> table, "+userPlayer.getName()+"!");
+        System.out.println("You have $"+forceTwoDecimalDouble(userPlayer.getMoney().toString()));
 
         do {
             game.start();
-            do {
-
-                do {
-                    System.out.println("How much do you want to bet?");
-                    input = getInput();
-                }
-                while (!isInputDouble(input) || !isInputPositive(input));
-                betField = Double.valueOf(input);
-            }
-            while (!userPlayer.hasMoneyToMakeBet(betField));
-
-            userPlayer.makeBet(betField);
-            game.addToPot(betField);
-
-            for (Card card : userPlayer.getHand()) {
-                System.out.println(card.toString());
-            }
-            System.out.println("Your current score is: " + userPlayer.calculateScore());
-
-            do {
-
-
-                do {
-                    System.out.print("Hit or stay? ");
-                    input = getInput();
-                } while (!isInputStayOrHit(input));
-
-                if ("hit".equalsIgnoreCase(input)) {
-                    game.dealCard(userPlayer);
-                }
-                System.out.println("Your current score is: " + userPlayer.calculateScore());
-                for (Card card : userPlayer.getHand()) {
-                    System.out.println(card.toString());
-                }
-
-            } while ("hit".equalsIgnoreCase(input) && (userPlayer.calculateScore() <= 21));
-
+            playerBets(userPlayer);
+            displayPlayerHandAndScore(userPlayer);
+            displayDealerCardShowing();
+            playerHitsOrStays(userPlayer);
             game.dealerHitUntilFinished();
+            determineWinOrLoss(userPlayer);
+        } while (playerStaysForAnotherRound(userPlayer));
 
-            if (game.playerWins()) {
-                System.out.println("Player wins!");
-            } else {
-                System.out.println("House wins!");
-            }
-            System.out.println("House has score: " + game.getDealer().getScore());
-
-            game.returnBet();
-            userPlayer.getHand().clear();
-            game.getDealer().getHand().clear();
-
-            System.out.println("You have $" + userPlayer.getMoney());
-            do {
-                System.out.println("Wanna go another round, cowboy?");
-                input = getInput();
-             }while (!isInputYesOrNo(input));
-        } while ("yes".equalsIgnoreCase(input) && userPlayer.getMoney()>=0.01);
-        if(userPlayer.getMoney() < 0.01d){
-            System.out.println("You outta monay");
-        }
-
-        System.out.println("Goodbye!");
-
-        
-
-
-/*
-        // this is the bet double -> makeABet(input);
-        // bet logic
-
-        do {
-            do {
-                System.out.println("Do you hit or stay?");
-                input = getInput();
-            } while (!isInputStayOrHit(input));
-
-            //do a hit
-
-        } while ("hit".equals(input));
-*/
-
+        System.out.println("Thanks for playing! Goodbye!");
     }
 
-    private static Scanner scanner = new Scanner (System.in);
+    private static boolean playerStaysForAnotherRound(Player userPlayer) {
+        String input;
+        System.out.println("You have $" + forceTwoDecimalDouble(userPlayer.getMoney().toString()));
+        if (userPlayer.getMoney() >= 0.01) {
+            do {
+                System.out.print("Stay for another round? [Yes/No]  ");
+                input = getInput();
+                if (isInputYesOrNo(input))
+                {
+                    return ("yes".equalsIgnoreCase(input));
+                }
+            } while (!isInputYesOrNo(input));
 
-    public static Double makeABet(String input) {
-        Double betDouble;
-        System.out.println("Make a bet!");
+        }
+        else {
+            System.out.println("You are out of money.");
+        }
+        return false;
+    }
 
-        betDouble = Double.valueOf(input);
+    private static void determineWinOrLoss(Player userPlayer){
 
-        return betDouble;
+        if (game.playerWins()) {
+            System.out.println("Player wins!");
+        } else {
+            System.out.println("House wins!");
+        }
+        System.out.println("House has score: " + game.getDealer().getScore());
+        resetPotAndDiscardHands(userPlayer);
+    }
+
+    private static void resetPotAndDiscardHands(Player userPlayer){
+        game.returnBet();
+        userPlayer.getHand().clear();
+        game.getDealer().getHand().clear();
+    }
+
+    private static void playerHitsOrStays(Player userPlayer){
+        String input;
+        do {
+            input=forceHitOrStay();
+            if ("hit".equalsIgnoreCase(input)) {
+                game.dealCard(userPlayer);
+            }
+            displayPlayerHandAndScore(userPlayer);
+        } while ("hit".equalsIgnoreCase(input) && (userPlayer.calculateScore() <= 21));
+    }
+
+    private static String forceHitOrStay(){
+        String input;
+        do {
+            System.out.print("Hit or stay? ");
+            input = getInput();
+        } while (!isInputStayOrHit(input));
+        return input;
+    }
+
+    private static void displayDealerCardShowing(){
+        System.out.println("Dealer is showing: "+game.getDealer().getHand().get(0).getValue());
+    }
+
+    private static void displayPlayerHandAndScore(Player userPlayer){
+        for (Card card : userPlayer.getHand()) {
+            System.out.println(card.toString());
+        }
+        System.out.println("Your current score is: " + userPlayer.calculateScore());
+    }
+
+    private static void playerBets(Player userPlayer){
+        Double betAmount;
+        String input;
+        input=forcePlayerBet(userPlayer);
+        betAmount=Double.valueOf(input);
+        userPlayer.makeBet(betAmount);
+        game.addToPot(betAmount);
+    }
+
+    private static String forcePlayerBet(Player userPlayer){
+        String input;
+        do {
+            input=forceDoubleInput();
+        }
+        while (!userPlayer.hasMoneyToMakeBet(Double.valueOf(input)));
+        return (input);
+    }
+
+    private static String forceDoubleInput() {
+        String input;
+        do {
+            System.out.print("How much do you want to bet?  ");
+            input = getInput();
+        } while (!isInputDouble(input) || !isInputPositive(input));
+        return forceTwoDecimalDouble(input);
     }
 
     private static String getInput()
@@ -135,9 +133,8 @@ public class Console {
 
     public static boolean isInputDouble(String passedString)
     {
-        Double output = null;
         try {
-            output = Double.valueOf(passedString);
+            Double output = Double.valueOf(passedString);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             System.out.println("Not a valid input");
@@ -156,5 +153,28 @@ public class Console {
     {
         return ("yes".equalsIgnoreCase(passedString) ||
                 "no".equalsIgnoreCase(passedString));
+    }
+
+    public static String forceTwoDecimalDouble(String input){
+        if ( !(input.contains(".")) ||
+               input.substring(input.indexOf("."), input.length()).length()==3)
+        {
+            return input;
+        }
+        else
+        {
+            if (input.substring(input.indexOf("."), input.length()).length()<3) {
+                do {
+                    input = input + "0";
+                } while (input.substring(input.indexOf("."), input.length()).length() < 3);
+                return input;
+            }
+
+            input = input.substring(0,input.indexOf("."))+
+                    input.substring(input.indexOf("."), input.indexOf(".")+3);
+            return input;
+        }
+
+
     }
 }

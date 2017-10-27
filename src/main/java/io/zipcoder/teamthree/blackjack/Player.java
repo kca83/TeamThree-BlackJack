@@ -3,12 +3,28 @@ package io.zipcoder.teamthree.blackjack;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<Card> hand = new ArrayList<Card>(2);
+    private ArrayList<Card> hand;
     private String name;
-    private Double money = Double.valueOf(500);
-    private Integer score = Integer.valueOf(0);
+    private Double money;
+    private Integer score;
 
+    public Player(){
+        hand = new ArrayList<Card>(2);
+        name="Player";
+        money = 500.0;
+        score = 0;
+    }
+    public Player(Double passedMoney){
+        this();
+        money=passedMoney;
+    }
+    public Player(String name, Double passedMoney){
+        this();
+        money=passedMoney;
+        this.name=name;
+    }
     public Player(String name) {
+        this();
         this.name = name;
     }
 
