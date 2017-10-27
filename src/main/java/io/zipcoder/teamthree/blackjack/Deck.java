@@ -28,7 +28,7 @@ public class Deck {
         cards = new ArrayList<Card>();
         for (Suit suit: Suit.values()) {
             for (int value = 1; value <= 13; value++) {
-                if (value < 11){
+                if (value < 10){
                     cards.add(new Card(suit, value));
                 } else {
                     cards.add(new Card(suit, 10));

@@ -15,10 +15,17 @@ public class DeckTest {
     public void setUp() {
         deck = new Deck();
     }
+    @Test
+    public void getAllCardsTest(){
+        deck = new Deck();
+        ArrayList<Card> cards;
+        cards = deck.getAllCards();
 
+        Assert.assertTrue((cards!=null)&&(cards.size()==52));
+    }
     @Test
     public void getCardTest(){
-        Assert.assertTrue(deck.getCard() instanceof Card);
+        Assert.assertTrue(deck.getCard() != null);
     }
 
     @Test
@@ -27,7 +34,7 @@ public class DeckTest {
         Integer actualCount = deck.getAllCards().size();
 
         Assert.assertEquals( expectedCount, actualCount);
-        Assert.assertTrue(deck.getCard() instanceof Card);
+        Assert.assertTrue(deck.getCard() != null);
     }
     
     @Test
