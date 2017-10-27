@@ -8,6 +8,11 @@ public class Card
     private Card(){
     }
 
+    @Override
+    public String toString(){
+        return ""+this.value;
+    }
+
     public Card(Suit passedSuit, Integer passedValue){
         suit=passedSuit;
         value=passedValue;

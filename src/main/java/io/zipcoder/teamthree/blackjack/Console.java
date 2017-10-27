@@ -18,21 +18,70 @@ public class Console {
         //if not quit -> make a bet
 
         Game game = new Game();
-        String input = "";
+        Player userPlayer = game.getPlayer();
+        String input;
+
+        
+        Double betField;
 
         System.out.println("Welcome to the <BlackJack> table, player1!");
-        System.out.println("You have $" /* + monay*/);
+
+        game.start();
+        System.out.println("You have $"+userPlayer.getMoney());
+
+        //do
+
         do {
 
             do {
                 System.out.println("How much do you want to bet?");
                 input = getInput();
             }
-            while (!(isInputDouble(input) && isInputPositive(input)));
-            Double betField = Double.valueOf(input);
+            while (!isInputDouble(input) || !isInputPositive(input));
+            betField = Double.valueOf(input);
         }
-        while (!game.getPlayer().hasMoneyToMakeBet(betfield));
+        while (!userPlayer.hasMoneyToMakeBet(betField));
 
+        userPlayer.makeBet(betField);
+        game.addToPot(betField);
+
+        for(Card card: userPlayer.getHand()){ System.out.println(card.toString());}
+        System.out.println("Your current score is: "+userPlayer.calculateScore());
+
+        do {
+
+
+            do {
+                System.out.print("Hit or stay? ");
+                input = getInput();
+            } while (!isInputStayOrHit(input));
+
+            if ("hit".equalsIgnoreCase(input)) {
+                game.dealCard(userPlayer);
+            }
+            System.out.println("Your current score is: " + userPlayer.calculateScore());
+            for(Card card: userPlayer.getHand()){ System.out.println(card.toString());}
+
+        }while("hit".equalsIgnoreCase(input) && (userPlayer.calculateScore()<=21) );
+
+         game.dealerHitUntilFinished();
+
+         if(game.playerWins()){
+             System.out.println("Player wins!");
+         } else {
+             System.out.println("House wins!");
+         }
+        System.out.println("House has score: "+game.getDealer().getScore());
+
+         game.returnBet();
+
+            System.out.println("You have $"+userPlayer.getMoney());
+
+
+        
+
+
+/*
         // this is the bet double -> makeABet(input);
         // bet logic
 
@@ -45,7 +94,7 @@ public class Console {
             //do a hit
 
         } while ("hit".equals(input));
-
+*/
 
     }
 
