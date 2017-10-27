@@ -14,6 +14,9 @@ public class Deck {
     }
 
     public Card getCard(){
+        if(cards.size() == 0) {
+            populate();
+        }
         Card card = cards.get(0);
         cards.remove(0);
         return card;
